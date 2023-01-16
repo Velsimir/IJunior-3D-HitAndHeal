@@ -9,22 +9,18 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
     [SerializeField] private Player _player;
-    [SerializeField] private float _speed;
 
     private Slider _slider;
-    private float _maxHealth;
 
     private void Start()
     {
         _slider = GetComponentInChildren<Slider>();
-        _slider.maxValue = _player.CheckCurrentHealth();
-        _slider.value = _player.CheckCurrentHealth();
-
-        _maxHealth = _player.CheckCurrentHealth();
+        _slider.maxValue = _player.Health;
+        _slider.value = _player.Health;
     }
 
     private void Update()
     {
-        _slider.value = Mathf.MoveTowards(_slider.value, _player.CheckCurrentHealth(), _speed * Time.deltaTime);
+        _slider.value = _player.Health;
     }
 }

@@ -1,49 +1,60 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player : MonoBehaviour
 {
     [Range(1,1000)]
-    [SerializeField] private int Health;
+    [SerializeField] private float _health;
+    [SerializeField] private float _speedHealthChanging;
 
-    private int _minHealth = 0;
-    private int _maxHealth = 1000;
+    private float _minHealth = 0;
+    private float _maxHealth = 1000;
+
+    public float Health {get {return _health; } private set { } }
+
 
     public void TakeDamage(int damage)
     {
-        int value = CheckValue(damage);
-        Health -= value;
-
-        CheckHealth();
-    }
-
-    public void TakeHeal(int damage)
-    {
-        int value = CheckValue(damage);
-        Health += value;
-
-        CheckHealth();
-    }
-
-    public int CheckCurrentHealth()
-    {
-        return Health;
-    }
-
-    private int CheckValue(int value)
-    {
-        if (value >= 0)
-            return value;
+        if (_health - damage > _minHealth)
+        {
+            StartCoroutine(ChangeHealthCorutine(damage));
+        }
         else
-            return 0;
+        {
+            StartCoroutine(ChangeHealthCorutine(_minHealth));
+        }
+
+        StopCoroutine(ChangeHealthCorutine(damage));
     }
 
-    private void CheckHealth()
+    public void TakeHeal(int heal)
     {
-        if (Health < _minHealth)
-            Health = _minHealth;
-        if (Health > _maxHealth)
-            Health = _maxHealth;
+        heal = -heal;
+
+        if (heal + _health < _maxHealth)
+        {
+            StartCoroutine(ChangeHealthCorutine(heal));
+        }
+        else
+        {
+            StartCoroutine(ChangeHealthCorutine(_maxHealth));
+        }
+
+        StopCoroutine(ChangeHealthCorutine(heal));
+    }
+
+    private IEnumerator ChangeHealthCorutine(float value)
+    {
+        var waitForEndFrame = new WaitForEndOfFrame();
+        float targetHealth = _health - value;
+
+        do
+        {
+            _health = Mathf.MoveTowards(_health, targetHealth, _speedHealthChanging * Time.deltaTime);
+            yield return waitForEndFrame;
+
+        } while (_health != targetHealth);
     }
 }
