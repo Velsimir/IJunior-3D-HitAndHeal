@@ -22,13 +22,9 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         if (_health - damage > _minHealth)
-        {
             _health -= damage;
-        }
         else
-        {
             _health = _minHealth;
-        }
 
         HealthChanged?.Invoke(_health);
     }
@@ -36,13 +32,9 @@ public class Player : MonoBehaviour
     public void TakeHeal(int heal)
     {
         if (_health + heal < _maxHealth)
-        {
             _health += heal;
-        }
         else
-        {
             _health = _maxHealth;
-        }
 
         HealthChanged?.Invoke(_health);
     }

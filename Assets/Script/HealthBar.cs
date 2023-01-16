@@ -12,7 +12,7 @@ public class HealthBar : MonoBehaviour
     [SerializeField] private float _speedHealthChanging = 100;
 
     private Slider _slider;
-    private Coroutine corutine;
+    private Coroutine _corutine;
 
     private void Start()
     {
@@ -45,14 +45,14 @@ public class HealthBar : MonoBehaviour
 
     private void OnHealthChanged(float health)
     {
-        if (corutine == null)
+        if (_corutine == null)
         {
-            corutine = StartCoroutine(ChangeHealthCorutine(health));
+            _corutine = StartCoroutine(ChangeHealthCorutine(health));
         }
         else
         {
-            StopCoroutine(corutine);
-            corutine = StartCoroutine(ChangeHealthCorutine(health));
+            StopCoroutine(_corutine);
+            _corutine = StartCoroutine(ChangeHealthCorutine(health));
         }
     }
 

@@ -8,8 +8,5 @@ public class Healer : MonoBehaviour
     [SerializeField] private int _heal;
     [SerializeField] private Player _player;
 
-    public void Heal()
-    {
-        _player.TakeHeal(_heal);
-    }
+    public void Heal() => _player.TakeHeal(_heal);
 }

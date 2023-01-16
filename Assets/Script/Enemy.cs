@@ -8,8 +8,5 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int _damage;
     [SerializeField] private Player _player;
 
-    public void Attack()
-    {
-        _player.TakeDamage(_damage);
-    }
+    public void Attack() => _player.TakeDamage(_damage);
 }
