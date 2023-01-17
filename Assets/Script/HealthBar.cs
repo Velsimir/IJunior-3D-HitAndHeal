@@ -35,25 +35,19 @@ public class HealthBar : MonoBehaviour
     {
         var waitForEndFrame = new WaitForEndOfFrame();
 
-        do
+        while(_slider.value != health)
         {
             _slider.value = Mathf.MoveTowards(_slider.value, health, _speedHealthChanging * Time.deltaTime);
             yield return waitForEndFrame;
-
-        } while (_slider.value != health);
+        }
     }
 
     private void OnHealthChanged(float health)
     {
-        if (_corutine == null)
-        {
-            _corutine = StartCoroutine(ChangeHealthCorutine(health));
-        }
-        else
-        {
+        if (_corutine != null)
             StopCoroutine(_corutine);
-            _corutine = StartCoroutine(ChangeHealthCorutine(health));
-        }
+
+        _corutine = StartCoroutine(ChangeHealthCorutine(health));
     }
 
     private void OnSetSliderMaxValue(float health)
